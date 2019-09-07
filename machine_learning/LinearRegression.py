@@ -62,3 +62,4 @@ class LinearRegression(object):
         ## function to show plot 
         plt.show() 
         
+    
