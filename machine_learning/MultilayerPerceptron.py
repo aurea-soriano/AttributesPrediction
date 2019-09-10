@@ -7,9 +7,11 @@ import matplotlib.pyplot as plt
 import numpy as np 
 from sklearn import linear_model, metrics 
 from sklearn.model_selection import train_test_split 
+from sklearn.preprocessing import StandardScaler  
+from sklearn.neural_network import MLPRegressor
 from utils.Utils import Utils
 
-class LinearRegression(object):
+class MultilayerPerceptron(object):
     '''
     classdocs
     '''
@@ -24,33 +26,61 @@ class LinearRegression(object):
         self.prediction();
         
     def prediction(self):
+        
+      
         # splitting X and y into training and testing sets 
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.4, 
                                                     random_state=1) 
-        
         train_num = X_train.shape[0];
         test_num = X_test.shape[0];
-        
-        # create linear regression object 
-        reg = linear_model.LinearRegression();
-  
+        #Multi-layer Perceptron is sensitive to feature scaling, 
+        #so it is highly recommended to scale your data.
+        scaler = StandardScaler()  
+        # Don't cheat - fit only on training data
+        scaler.fit(X_train)  
+        X_train = scaler.transform(X_train)  
+        # apply same transformation to test data
+        X_test = scaler.transform(X_test)  
+
+        # create multilayer perceptron object 
+        mlp = MLPRegressor(hidden_layer_sizes=(5,),
+                                     activation='relu',
+                                     solver='adam',
+                                     learning_rate='adaptive',
+                                     max_iter=1000,
+                                     learning_rate_init=0.01,
+                                     alpha=0.01);
+                   
+           
+
         # train the model using the training sets 
-        reg.fit(X_train, y_train);
-  
-        # regression coefficients 
-        print('Coefficients: \n', reg.coef_); 
-  
+        mlp.fit(X_train, y_train) 
+        
         # variance score: 1 means perfect prediction 
-        print('Variance score: {}'.format(reg.score(X_test, y_test))); 
+        print('Variance score: {}'.format(mlp.score(X_test, y_test))) 
   
+                
+        # regression coefficients 
+        #print('Coefficients: \n', mlp.coefs_) 
+
+        # layers 
+        #print('Layers: \n',mlp.n_layers_)
         
-        y_train_pred = reg.predict(X_train);
-        y_test_pred = reg.predict(X_test);
+        #outputs
+        #print('Outputs: \n',mlp.n_outputs_)
         
+        #out activation
+        #print('Out activation: \n',mlp.out_activation_)
         
+              
+        y_train_pred = mlp.predict(X_train);
+        y_test_pred = mlp.predict(X_test);
+        
+       
         # standard error 
         std_train_error = Utils.std_error(y_train, y_train_pred);
         std_test_error =  Utils.std_error(y_test, y_test_pred);
+        
         
         print('Train error: \n',std_train_error);
         print('Test error: \n',std_test_error);
@@ -58,7 +88,7 @@ class LinearRegression(object):
         # Plot
         fig = plt.figure()
         ax1 = fig.add_subplot(111)
-        plt.title('Linear Regression');
+        plt.title('Multilayer Perceptron');
         plt.xlabel('Real Y');
         plt.ylabel('Predicted Y');
         
@@ -66,5 +96,7 @@ class LinearRegression(object):
         ax1.scatter(np.array(y_test_pred.T), np.array(y_test.T), s=10, c='g', alpha=0.5, label='Test '+ str(round(std_test_error,4)));
         plt.legend(loc='upper left');
         
-        
         plt.show()
+
+        
+    

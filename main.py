@@ -5,6 +5,7 @@ Created on Sep 7, 2019
 '''
 from utils.FileReader import FileReader
 from machine_learning.LinearRegression import LinearRegression
+from machine_learning.MultilayerPerceptron import MultilayerPerceptron
 import numpy as np
 
 class Main(object):
@@ -18,7 +19,6 @@ class Main(object):
         Constructor
         '''
         self.create_training_data();
-        print "aurea";
         
     def create_training_data(self):
         attributes_files = ["Porosity", "Porosity-Effective Ref", "NTG", "Sw_base", "Sg_Base", "dSg"];
@@ -74,8 +74,12 @@ class Main(object):
         
         features_matrix = np.concatenate((x, y, porosity, porosity_effective, ntg, sw_base,
                                           sg_base,dsg ), axis=1)
-       
-        linearRegression = LinearRegression(features_matrix, dsw);
+        attributes_names = ["X", "Y", "Porosity", "Porosity-Effective Ref", "NTG", "Sw_base", "Sg_Base", "dSg"];
+
+        target_name= "dSw";
+        
+        linearRegression = LinearRegression(features_matrix, dsw, attributes_names, target_name);
+        multilayerPerceptron = MultilayerPerceptron(features_matrix, dsw, attributes_names, target_name);
 
 if __name__ == '__main__':
     app = Main("");
