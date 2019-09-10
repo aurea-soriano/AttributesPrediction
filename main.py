@@ -6,6 +6,7 @@ Created on Sep 7, 2019
 from utils.FileReader import FileReader
 from machine_learning.LinearRegression import LinearRegression
 from machine_learning.MultilayerPerceptron import MultilayerPerceptron
+from machine_learning.SVRegression import SVRegression
 import numpy as np
 
 class Main(object):
@@ -79,9 +80,11 @@ class Main(object):
         
         linearRegression = LinearRegression(features_matrix_dsw, dsw);
         multilayerPerceptron = MultilayerPerceptron(features_matrix_dsw, dsw);
+        svRegression = SVRegression(features_matrix_dsw, dsw);
         
-        linearRegression = LinearRegression(features_matrix_dsg, dsg);
-        multilayerPerceptron = MultilayerPerceptron(features_matrix_dsg, dsg);
+        linearRegression2 = LinearRegression(features_matrix_dsg, dsg);
+        multilayerPerceptron2 = MultilayerPerceptron(features_matrix_dsg, dsg);
+        svRegression2 = SVRegression(features_matrix_dsg, dsg);
 
 if __name__ == '__main__':
     app = Main("");
