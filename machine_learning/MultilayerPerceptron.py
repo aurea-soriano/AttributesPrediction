@@ -89,9 +89,10 @@ class MultilayerPerceptron(object):
         plt.title('Multilayer Perceptron');
         plt.xlabel('Real Y');
         plt.ylabel('Predicted Y');
-        
+        plt.xlim([-0.4,0.4]);
+        plt.ylim([-0.4,0.4]);
         ax1.scatter(np.array(y_train_pred.T), np.array(y_train.T), s=10, c='b', alpha=0.5,  label='Train '+ str(round(std_train_error,4)));
-        ax1.scatter(np.array(y_test_pred.T), np.array(y_test.T), s=10, c='g', alpha=0.5, label='Test '+ str(round(std_test_error,4)));
+        #ax1.scatter(np.array(y_test_pred.T), np.array(y_test.T), s=10, c='g', alpha=0.5, label='Test '+ str(round(std_test_error,4)));
         plt.legend(loc='upper left');
         
         plt.show()

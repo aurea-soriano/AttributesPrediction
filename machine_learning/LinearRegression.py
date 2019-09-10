@@ -24,8 +24,7 @@ class LinearRegression(object):
     def prediction(self):
         print('****************Linear Regression****************');
         # splitting X and y into training and testing sets 
-        X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.4, 
-                                                    random_state=1) 
+        X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.4) 
         
         train_num = X_train.shape[0];
         test_num = X_test.shape[0];
@@ -61,9 +60,13 @@ class LinearRegression(object):
         plt.xlabel('Real Y');
         plt.ylabel('Predicted Y');
         
-        ax1.scatter(np.array(y_train_pred.T), np.array(y_train.T), s=10, c='b', alpha=0.5,  label='Train '+ str(round(std_train_error,4)));
-        ax1.scatter(np.array(y_test_pred.T), np.array(y_test.T), s=10, c='g', alpha=0.5, label='Test '+ str(round(std_test_error,4)));
+        ax1.scatter(np.array(y_train_pred), np.array(y_train), s=20, c='b', alpha=0.5,  label='Train '+ str(round(std_train_error,4)));
+        #ax1.scatter(np.array(y_test_pred), np.array(y_test), s=10, c='g', edgecolors='b', alpha=0.5, label='Test '+ str(round(std_test_error,4)));
+        plt.xlim([-0.4,0.4]);
+        plt.ylim([-0.4,0.4]);
         plt.legend(loc='upper left');
+        
+      
         
         
         plt.show()

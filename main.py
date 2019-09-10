@@ -82,9 +82,9 @@ class Main(object):
         multilayerPerceptron = MultilayerPerceptron(features_matrix_dsw, dsw);
         svRegression = SVRegression(features_matrix_dsw, dsw);
         
-        linearRegression2 = LinearRegression(features_matrix_dsg, dsg);
-        multilayerPerceptron2 = MultilayerPerceptron(features_matrix_dsg, dsg);
-        svRegression2 = SVRegression(features_matrix_dsg, dsg);
+        #linearRegression2 = LinearRegression(features_matrix_dsg, dsg);
+        #multilayerPerceptron2 = MultilayerPerceptron(features_matrix_dsg, dsg);
+        #svRegression2 = SVRegression(features_matrix_dsg, dsg);
 
 if __name__ == '__main__':
     app = Main("");

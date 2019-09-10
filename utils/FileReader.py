@@ -28,8 +28,7 @@ class FileReader(object):
                 text = line.split(' ');
                 vector = np.array(text);
                 vector = vector.astype(np.float);
-                #print text;
-                #print vector;
+                #print(text);
                 self.resulting_vector.append(vector);
             count+=1
         self.resulting_matrix = np.mat(self.resulting_vector)
