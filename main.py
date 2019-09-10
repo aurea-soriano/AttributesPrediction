@@ -72,15 +72,16 @@ class Main(object):
         fileReader.read();
         dsw = fileReader.resulting_matrix[:,2];
         
-        features_matrix_dsw = np.concatenate((x, y, porosity, porosity_effective, ntg, sw_base,
-                                          sg_base,dsg ), axis=1)
+        features_matrix_dsw = np.concatenate((porosity, porosity_effective, ntg, sw_base), axis=1)
+        #np.concatenate((x, y, porosity, porosity_effective, ntg, sw_base,
+        #                                  sg_base,dsg ), axis=1)
         features_matrix_dsg = np.concatenate((x, y, porosity, porosity_effective, ntg, sw_base,
                                           sg_base,dsw ), axis=1)
     
         
         linearRegression = LinearRegression(features_matrix_dsw, dsw);
-        multilayerPerceptron = MultilayerPerceptron(features_matrix_dsw, dsw);
-        svRegression = SVRegression(features_matrix_dsw, dsw);
+        #multilayerPerceptron = MultilayerPerceptron(features_matrix_dsw, dsw);
+        #svRegression = SVRegression(features_matrix_dsw, dsw);
         
         #linearRegression2 = LinearRegression(features_matrix_dsg, dsg);
         #multilayerPerceptron2 = MultilayerPerceptron(features_matrix_dsg, dsg);

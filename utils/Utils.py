@@ -20,5 +20,6 @@ class Utils(object):
             temp += np.power((_real_y[i]-_predicted_y[i]),2);
         temp/=num;
         return np.float(np.sqrt(temp));
-     
+    
+  
         
