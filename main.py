@@ -21,8 +21,7 @@ class Main(object):
         self.create_training_data();
         
     def create_training_data(self):
-        attributes_files = ["Porosity", "Porosity-Effective Ref", "NTG", "Sw_base", "Sg_Base", "dSg"];
-        target_file = "dSw";
+        attributes_files = ["Porosity", "Porosity-Effective Ref", "NTG", "Sw_base", "Sg_Base", "dSg", "dSw"];
         
         training_matrix = []
         x = []
@@ -67,19 +66,22 @@ class Main(object):
         fileReader.read();
         dsg = fileReader.resulting_matrix[:,2];
         
-        # reading dsw "target"
-        fileReader = FileReader("data/"+target_file, 20);
+        # reading dsw 
+        fileReader = FileReader("data/"+attributes_files[6], 20);
         fileReader.read();
         dsw = fileReader.resulting_matrix[:,2];
         
-        features_matrix = np.concatenate((x, y, porosity, porosity_effective, ntg, sw_base,
+        features_matrix_dsw = np.concatenate((x, y, porosity, porosity_effective, ntg, sw_base,
                                           sg_base,dsg ), axis=1)
-        attributes_names = ["X", "Y", "Porosity", "Porosity-Effective Ref", "NTG", "Sw_base", "Sg_Base", "dSg"];
-
-        target_name= "dSw";
+        features_matrix_dsg = np.concatenate((x, y, porosity, porosity_effective, ntg, sw_base,
+                                          sg_base,dsw ), axis=1)
+    
         
-        linearRegression = LinearRegression(features_matrix, dsw, attributes_names, target_name);
-        multilayerPerceptron = MultilayerPerceptron(features_matrix, dsw, attributes_names, target_name);
+        linearRegression = LinearRegression(features_matrix_dsw, dsw);
+        multilayerPerceptron = MultilayerPerceptron(features_matrix_dsw, dsw);
+        
+        linearRegression = LinearRegression(features_matrix_dsg, dsg);
+        multilayerPerceptron = MultilayerPerceptron(features_matrix_dsg, dsg);
 
 if __name__ == '__main__':
     app = Main("");

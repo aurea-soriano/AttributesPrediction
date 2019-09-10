@@ -17,12 +17,10 @@ class MultilayerPerceptron(object):
     '''
 
 
-    def __init__(self, _features_matrix, _target, _features_names, _target_name):
+    def __init__(self, _features_matrix, _target):
         # defining feature matrix(X) and response vector(y) 
         self.X = _features_matrix;
         self.y = _target;
-        self.features_names = _features_names;
-        self.target_name = _target_name;
         self.prediction();
         
     def prediction(self):
