@@ -26,7 +26,7 @@ class SVRegression(object):
         
         print('****************SVR Regression****************');
         # splitting X and y into training and testing sets 
-        X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.4, 
+        X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.3, 
                                                     random_state=1) 
         train_num = X_train.shape[0];
         test_num = X_test.shape[0];
@@ -49,8 +49,8 @@ class SVRegression(object):
         plt.title('Support Vector Regression - RBF');
         plt.xlabel('Real Y');
         plt.ylabel('Predicted Y');
-        plt.xlim([-0.4,0.4]);
-        plt.ylim([-0.4,0.4]);
+        #plt.xlim([-0.4,0.4]);
+        #plt.ylim([-0.4,0.4]);
         ax1.scatter(np.array(y_train_pred_rbf.T), np.array(y_train.T), s=10, c='b', alpha=0.5,  label='Train '+ str(round(std_train_error_rbf,4)));
         #ax1.scatter(np.array(y_test_pred_rbf.T), np.array(y_test.T), s=10, c='g', alpha=0.5, label='Test '+ str(round(std_test_error_rbf,4)));
         plt.legend(loc='upper left');

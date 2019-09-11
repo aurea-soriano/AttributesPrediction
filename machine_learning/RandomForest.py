@@ -1,15 +1,17 @@
 '''
-Created on Sep 7, 2019
+Created on Sep 11, 2019
 
 @author: aurea
 '''
+
 import matplotlib.pyplot as plt 
 import numpy as np 
-from sklearn import linear_model, metrics 
+from sklearn import metrics 
 from sklearn.model_selection import train_test_split 
 from utils.Metrics import Metrics
+from sklearn.ensemble import RandomForestRegressor
 
-class LinearRegression(object):
+class RandomForest(object):
     '''
     classdocs
     '''
@@ -22,22 +24,20 @@ class LinearRegression(object):
         self.prediction();
         
     def prediction(self):
-        print('****************Linear Regression****************');
+        print('****************Random Forest****************');
         # splitting X and y into training and testing sets 
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.3) 
         
         train_num = X_train.shape[0];
         test_num = X_test.shape[0];
         
-        # create linear regression object 
-        reg = linear_model.LinearRegression();
-  
+        # create regression object 
+        reg = RandomForestRegressor(max_depth=2, random_state=0,n_estimators=100)
+      
         # train the model using the training sets 
         reg.fit(X_train, y_train);
   
-        # regression coefficients 
-        print('Coefficients: \n', reg.coef_); 
-  
+      
         # variance score: 1 means perfect prediction 
         print('Variance score: {}'.format(reg.score(X_test, y_test))); 
   
@@ -67,7 +67,7 @@ class LinearRegression(object):
         # Plot
         fig = plt.figure()
         ax1 = fig.add_subplot(111)
-        plt.title('Linear Regression');
+        plt.title('Random Forest Regression');
         plt.xlabel('Real Y');
         plt.ylabel('Predicted Y');
         ax1.scatter(np.array(y_train_pred), np.array(y_train), s=20, c='b', alpha=0.5,  label='Train '+ str(round(std_train_error,4)));

@@ -34,4 +34,18 @@ class Metrics(object):
                 row_result.append(Metrics.pearson_correlation(attributes_values[i], attributes_values[j]));
             matrix_result.append(row_result);   
         return matrix_result;
-        
+    
+    @staticmethod
+    def min_max_scaling(vector):
+        max_value = np.max(vector);
+        min_value = np.min(vector);
+        new_max = 1;
+        new_min = 0;
+        if  max_value == min_value:
+            den = 0.00000001;  
+        else:
+            den = max_value - min_value;
+        return  (((new_max - new_min) * (vector - min_value)) / den) + new_min;
+    
+    
+    
