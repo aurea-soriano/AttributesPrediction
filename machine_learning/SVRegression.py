@@ -8,7 +8,7 @@ import numpy as np
 from sklearn import linear_model, metrics 
 from sklearn.model_selection import train_test_split 
 from sklearn.svm import SVR
-from utils.Utils import Utils
+from utils.Metrics import Metrics
 
 class SVRegression(object):
     '''
@@ -39,8 +39,8 @@ class SVRegression(object):
         print('Variance score(RBF): {}'.format(svr_rbf.score(X_test, y_test))) 
         y_train_pred_rbf = svr_rbf.predict(X_train);
         y_test_pred_rbf = svr_rbf.predict(X_test);
-        std_train_error_rbf = Utils.std_error(y_train, y_train_pred_rbf);
-        std_test_error_rbf =  Utils.std_error(y_test, y_test_pred_rbf);
+        std_train_error_rbf = Metrics.std_error(y_train, y_train_pred_rbf);
+        std_test_error_rbf =  Metrics.std_error(y_test, y_test_pred_rbf);
         print('Train error(rbf): \n',std_train_error_rbf);
         print('Test error(rbf): \n',std_test_error_rbf);
         #RBF

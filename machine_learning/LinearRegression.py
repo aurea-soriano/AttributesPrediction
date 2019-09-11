@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np 
 from sklearn import linear_model, metrics 
 from sklearn.model_selection import train_test_split 
-from utils.Utils import Utils
+from utils.Metrics import Metrics
 
 class LinearRegression(object):
     '''
@@ -47,7 +47,7 @@ class LinearRegression(object):
         
         
         # standard error 
-        std_train_error = Utils.std_error(y_train, y_train_pred);
+        std_train_error = Metrics.std_error(y_train, y_train_pred);
         r2_score_train = metrics.r2_score(y_train, y_train_pred)
         print('Train error: \n',std_train_error);
         #R2 corresponds to the squared correlation between the observed 
@@ -55,7 +55,7 @@ class LinearRegression(object):
         # The Higher the R-squared, the better the model.
         print('R2: \n',r2_score_train);
         
-        std_test_error = Utils.std_error(y_test, y_test_pred);
+        std_test_error = Metrics.std_error(y_test, y_test_pred);
         r2_score_test = metrics.r2_score(y_test, y_test_pred)
         print('Test error: \n',std_test_error);
         #R2 corresponds to the squared correlation between the observed 

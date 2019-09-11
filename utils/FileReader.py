@@ -10,34 +10,28 @@ class FileReader(object):
     '''
     classdocs
     '''
-    
-    def __init__(self, _text_name, _from_line):
-        '''
-        Constructor
-        '''
-        self.text_name = _text_name;
-        self.from_line = _from_line;
-        self.resulting_vector = [];
-        self.resulting_matrix = [];
-   
-    def read(self):
-        file = open(self.text_name, "r");
+    @staticmethod   
+    def read(text_name, from_line):
+        resulting_vector = [];
+        resulting_matrix = [];
+        file = open(text_name, "r");
         count = 0;
         for line in file: 
-            if count>self.from_line:
+            if count>from_line:
                 text = line.split(' ');
                 vector = np.array(text);
                 vector = vector.astype(np.float);
                 #print(text);
-                self.resulting_vector.append(vector);
+                resulting_vector.append(vector);
             count+=1
-        self.resulting_matrix = np.mat(self.resulting_vector)
+        resulting_matrix = np.mat(resulting_vector)
         file.close()
+        return resulting_matrix;
         
         
 def main():
-    fileReader = FileReader("../data/dSg", 20);
-    fileReader.read();
+    dsg = FileReader.read("../data/dSg", 20);
+    print(dsg)
              
 if __name__ == '__main__':
     main();

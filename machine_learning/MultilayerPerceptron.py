@@ -9,7 +9,7 @@ from sklearn import linear_model, metrics
 from sklearn.model_selection import train_test_split 
 from sklearn.preprocessing import StandardScaler  
 from sklearn.neural_network import MLPRegressor
-from utils.Utils import Utils
+from utils.Metrics import Metrics
 
 class MultilayerPerceptron(object):
     '''
@@ -76,8 +76,8 @@ class MultilayerPerceptron(object):
         
        
         # standard error 
-        std_train_error = Utils.std_error(y_train, y_train_pred);
-        std_test_error =  Utils.std_error(y_test, y_test_pred);
+        std_train_error = Metrics.std_error(y_train, y_train_pred);
+        std_test_error =  Metrics.std_error(y_test, y_test_pred);
         
         
         print('Train error: \n',std_train_error);

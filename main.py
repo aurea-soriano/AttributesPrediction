@@ -7,7 +7,12 @@ from utils.FileReader import FileReader
 from machine_learning.LinearRegression import LinearRegression
 from machine_learning.MultilayerPerceptron import MultilayerPerceptron
 from machine_learning.SVRegression import SVRegression
+from machine_learning.XGBoost import XGBoost
+from machine_learning.CorrelationAnalysis import CorrelationAnalysis
+from utils.Metrics import Metrics
 import numpy as np
+from scipy.spatial.transform import rotation
+
 
 class Main(object):
     '''
@@ -36,56 +41,57 @@ class Main(object):
         dsw = []
        
         # reading Porosity
-        fileReader = FileReader("data/"+attributes_files[0], 20);
-        fileReader.read();
-        x = fileReader.resulting_matrix[:,0];
-        y = fileReader.resulting_matrix[:,1];
-        porosity = fileReader.resulting_matrix[:,2];
+        porosityMatrix = FileReader.read("data/"+attributes_files[0], 20);
+        x = np.squeeze(np.asarray(porosityMatrix[:,0]));
+        y = np.squeeze(np.asarray(porosityMatrix[:,1]));
+        porosity = np.squeeze(np.asarray(porosityMatrix[:,2]));
         
         # reading Porosity-effective
-        fileReader = FileReader("data/"+attributes_files[1], 20);
-        fileReader.read();
-        porosity_effective = fileReader.resulting_matrix[:,2];
+        porosityEffectiveMatrix = FileReader.read("data/"+attributes_files[1], 20);
+        porosity_effective = np.squeeze(np.asarray(porosityEffectiveMatrix[:,2]));
         
         # reading ntg
-        fileReader = FileReader("data/"+attributes_files[2], 20);
-        fileReader.read();
-        ntg = fileReader.resulting_matrix[:,2];
+        ntgMatrix = FileReader.read("data/"+attributes_files[2], 20);
+        ntg = np.squeeze(np.asarray(ntgMatrix[:,2]));
         
         # reading sw_base
-        fileReader = FileReader("data/"+attributes_files[3], 20);
-        fileReader.read();
-        sw_base = fileReader.resulting_matrix[:,2];
+        swBaseMatrix = FileReader.read("data/"+attributes_files[3], 20);
+        sw_base = np.squeeze(np.asarray(swBaseMatrix[:,2]));
         
         # reading sg_base
-        fileReader = FileReader("data/"+attributes_files[4], 20);
-        fileReader.read();
-        sg_base = fileReader.resulting_matrix[:,2];
+        sgBaseMatrix = FileReader.read("data/"+attributes_files[4], 20);
+        sg_base = np.squeeze(np.asarray(sgBaseMatrix[:,2]));
         
         # reading dsg
-        fileReader = FileReader("data/"+attributes_files[5], 20);
-        fileReader.read();
-        dsg = fileReader.resulting_matrix[:,2];
+        dsgMatrix = FileReader.read("data/"+attributes_files[5], 20);
+        dsg = np.squeeze(np.asarray(dsgMatrix[:,2]));
         
         # reading dsw 
-        fileReader = FileReader("data/"+attributes_files[6], 20);
-        fileReader.read();
-        dsw = fileReader.resulting_matrix[:,2];
+        dswMatrix = FileReader.read("data/"+attributes_files[6], 20);
+        dsw = np.squeeze(np.asarray(dswMatrix[:,2]));
         
-        features_matrix_dsw = np.concatenate((porosity, porosity_effective, ntg, sw_base), axis=1)
-        #np.concatenate((x, y, porosity, porosity_effective, ntg, sw_base,
-        #                                  sg_base,dsg ), axis=1)
-        features_matrix_dsg = np.concatenate((x, y, porosity, porosity_effective, ntg, sw_base,
-                                          sg_base,dsw ), axis=1)
+        
+        
+        attributes_list = [x, y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
+        attributes_matrix = np.c_[x,y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
+        attributes_names = ["x", "y", "Porosity", "Porosity-Eff", "NTG", "Sw_base", "Sg_Base", "dSg", "dSw"];
+        #CorrelationAnalysis(attributes_list, attributes_matrix, attributes_names);
+       
+        
+        #np.c_[x,y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
+        features_matrix_dsw = np.c_[porosity, porosity_effective, ntg];
+        features_matrix_dsg = np.c_[porosity, porosity_effective, ntg];
     
         
         linearRegression = LinearRegression(features_matrix_dsw, dsw);
-        #multilayerPerceptron = MultilayerPerceptron(features_matrix_dsw, dsw);
-        #svRegression = SVRegression(features_matrix_dsw, dsw);
+        multilayerPerceptron = MultilayerPerceptron(features_matrix_dsw, dsw);
+        svRegression = SVRegression(features_matrix_dsw, dsw);
+        xgBoost = XGBoost(features_matrix_dsw, dsw);
         
         #linearRegression2 = LinearRegression(features_matrix_dsg, dsg);
         #multilayerPerceptron2 = MultilayerPerceptron(features_matrix_dsg, dsg);
         #svRegression2 = SVRegression(features_matrix_dsg, dsg);
+        #xgBoost2 = xgBoost(features_matrix_dsg, dsg);
 
 if __name__ == '__main__':
     app = Main("");
