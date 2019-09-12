@@ -34,7 +34,8 @@ class CorrelationAnalysis(object):
         ax = sns.heatmap(pearson_matrix, cmap="coolwarm",  vmin=-1, vmax=1,annot=True, xticklabels = self.attributes_names,
                          yticklabels = self.attributes_names, square=True)
         ax.xaxis.set_ticks_position('top')
-        ax.set_ylim(9,0);
+        
+        ax.set_ylim(10,0);
         plt.xticks(rotation=45)  
         plt.show()
        

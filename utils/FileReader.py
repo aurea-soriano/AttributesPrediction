@@ -30,7 +30,7 @@ class FileReader(object):
         
         
 def main():
-    dsg = FileReader.read("../data/dSg", 20);
+    dsg = FileReader.read("../data/avg_dRMS", 20);#
     print(dsg)
              
 if __name__ == '__main__':

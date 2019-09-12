@@ -50,17 +50,26 @@ class XGBoost(object):
     
         # standard error 
         std_train_error = Metrics.std_error(y_train, y_train_pred);
-        std_test_error =  Metrics.std_error(y_test, y_test_pred);
-        
-        
+        r2_score_train = metrics.r2_score(y_train, y_train_pred)
         print('Train error: \n',std_train_error);
+        #R2 corresponds to the squared correlation between the observed 
+        # outcome values and the predicted values by the model. 
+        # The Higher the R-squared, the better the model.
+        print('R2: \n',r2_score_train);
+        
+        std_test_error = Metrics.std_error(y_test, y_test_pred);
+        r2_score_test = metrics.r2_score(y_test, y_test_pred)
         print('Test error: \n',std_test_error);
+        #R2 corresponds to the squared correlation between the observed 
+        # outcome values and the predicted values by the model. 
+        # The Higher the R-squared, the better the model.
+        print('R2: \n',r2_score_test);
         
-        
+        '''
         xgb.plot_importance(bst)
         xgb.plot_tree(bst, num_trees=2)
         xgb.to_graphviz(bst, num_trees=2)
-        
+        '''
         
         # Plot
         fig = plt.figure()
@@ -70,7 +79,7 @@ class XGBoost(object):
         plt.ylabel('Predicted Y');
         #plt.xlim([-0.4,0.4]);
         #plt.ylim([-0.4,0.4]);
-        ax1.scatter(np.array(y_train_pred.T), np.array(y_train.T), s=10, c='b', alpha=0.5,  label='Train '+ str(round(std_train_error,4)));
+        ax1.scatter(np.array(y_train_pred), np.array(y_train), s=20, c='b', alpha=0.5,  label='StdError: '+ str(round(std_train_error,4)) + ' R2: ' + str(round(r2_score_train,4)));
         #ax1.scatter(np.array(y_test_pred.T), np.array(y_test.T), s=10, c='g', alpha=0.5, label='Test '+ str(round(std_test_error,4)));
         plt.legend(loc='upper left');
         

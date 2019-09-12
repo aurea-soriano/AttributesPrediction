@@ -33,21 +33,21 @@ class MultilayerPerceptron(object):
         test_num = X_test.shape[0];
         #Multi-layer Perceptron is sensitive to feature scaling, 
         #so it is highly recommended to scale your data.
-        scaler = StandardScaler()  
+        #scaler = StandardScaler()  
         # Don't cheat - fit only on training data
-        scaler.fit(X_train)  
-        X_train = scaler.transform(X_train)  
+        #scaler.fit(X_train)  
+        #X_train = scaler.transform(X_train)  
         # apply same transformation to test data
-        X_test = scaler.transform(X_test)  
+        #X_test = scaler.transform(X_test)  
 
         # create multilayer perceptron object 
-        mlp = MLPRegressor(hidden_layer_sizes=(5,),
-                                     activation='relu',
+        mlp = MLPRegressor(hidden_layer_sizes=(5,2,),
+                                     activation='logistic',# {‘identity’, ‘logistic’, ‘tanh’, ‘relu’}
                                      solver='adam',
-                                     learning_rate='adaptive',
+                                     learning_rate='constant', #{‘constant’, ‘invscaling’, ‘adaptive’}
                                      max_iter=1000,
-                                     learning_rate_init=0.01,
-                                     alpha=0.01);
+                                     learning_rate_init=0.001,
+                                     alpha=0.0001);
                    
            
 
@@ -77,7 +77,20 @@ class MultilayerPerceptron(object):
        
         # standard error 
         std_train_error = Metrics.std_error(y_train, y_train_pred);
-        std_test_error =  Metrics.std_error(y_test, y_test_pred);
+        r2_score_train = metrics.r2_score(y_train, y_train_pred)
+        print('Train error: \n',std_train_error);
+        #R2 corresponds to the squared correlation between the observed 
+        # outcome values and the predicted values by the model. 
+        # The Higher the R-squared, the better the model.
+        print('R2: \n',r2_score_train);
+        
+        std_test_error = Metrics.std_error(y_test, y_test_pred);
+        r2_score_test = metrics.r2_score(y_test, y_test_pred)
+        print('Test error: \n',std_test_error);
+        #R2 corresponds to the squared correlation between the observed 
+        # outcome values and the predicted values by the model. 
+        # The Higher the R-squared, the better the model.
+        print('R2: \n',r2_score_test);
         
         
         print('Train error: \n',std_train_error);
@@ -91,7 +104,7 @@ class MultilayerPerceptron(object):
         plt.ylabel('Predicted Y');
         #plt.xlim([-0.4,0.4]);
         #plt.ylim([-0.4,0.4]);
-        ax1.scatter(np.array(y_train_pred.T), np.array(y_train.T), s=10, c='b', alpha=0.5,  label='Train '+ str(round(std_train_error,4)));
+        ax1.scatter(np.array(y_train_pred), np.array(y_train), s=20, c='b', alpha=0.5,  label='StdError: '+ str(round(std_train_error,4)) + ' R2: ' + str(round(r2_score_train,4)));
         #ax1.scatter(np.array(y_test_pred.T), np.array(y_test.T), s=10, c='g', alpha=0.5, label='Test '+ str(round(std_test_error,4)));
         plt.legend(loc='upper left');
         

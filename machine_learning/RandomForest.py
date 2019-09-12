@@ -10,6 +10,7 @@ from sklearn import metrics
 from sklearn.model_selection import train_test_split 
 from utils.Metrics import Metrics
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.feature_selection import SelectFromModel
 
 class RandomForest(object):
     '''
@@ -17,10 +18,11 @@ class RandomForest(object):
     '''
 
 
-    def __init__(self, _features_matrix, _target):
+    def __init__(self, _features_matrix, _target, _attributes_names):
         # defining feature matrix(X) and response vector(y) 
         self.X = _features_matrix;
         self.y = _target;
+        self.attributes_names = _attributes_names;
         self.prediction();
         
     def prediction(self):
@@ -32,7 +34,7 @@ class RandomForest(object):
         test_num = X_test.shape[0];
         
         # create regression object 
-        reg = RandomForestRegressor(max_depth=2, random_state=0,n_estimators=100)
+        reg = RandomForestRegressor(random_state=42,n_estimators=100) 
       
         # train the model using the training sets 
         reg.fit(X_train, y_train);
@@ -70,9 +72,13 @@ class RandomForest(object):
         plt.title('Random Forest Regression');
         plt.xlabel('Real Y');
         plt.ylabel('Predicted Y');
-        ax1.scatter(np.array(y_train_pred), np.array(y_train), s=20, c='b', alpha=0.5,  label='Train '+ str(round(std_train_error,4)));
+        ax1.scatter(np.array(y_train_pred), np.array(y_train), s=20, c='b', alpha=0.5,  label='StdError: '+ str(round(std_train_error,4)) + ' R2: ' + str(round(r2_score_train,4)));
         #ax1.scatter(np.array(y_test_pred), np.array(y_test), s=10, c='g', edgecolors='b', alpha=0.5, label='Test '+ str(round(std_test_error,4)));
         #plt.xlim([-0.4,0.4]);
         #plt.ylim([-0.4,0.4]);
         plt.legend(loc='upper left');
         plt.show()
+        
+        print("Features sorted by their score:");
+        print(sorted(zip(map(lambda x: round(x, 4), reg.feature_importances_), self.attributes_names), 
+             reverse=True));

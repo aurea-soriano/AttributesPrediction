@@ -70,7 +70,7 @@ class LinearRegression(object):
         plt.title('Linear Regression');
         plt.xlabel('Real Y');
         plt.ylabel('Predicted Y');
-        ax1.scatter(np.array(y_train_pred), np.array(y_train), s=20, c='b', alpha=0.5,  label='Train '+ str(round(std_train_error,4)));
+        ax1.scatter(np.array(y_train_pred), np.array(y_train), s=20, c='b', alpha=0.5,  label='StdError: '+ str(round(std_train_error,4)) + ' R2: ' + str(round(r2_score_train,4)));
         #ax1.scatter(np.array(y_test_pred), np.array(y_test), s=10, c='g', edgecolors='b', alpha=0.5, label='Test '+ str(round(std_test_error,4)));
         #plt.xlim([-0.4,0.4]);
         #plt.ylim([-0.4,0.4]);
