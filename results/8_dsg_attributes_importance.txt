@@ -1,0 +1,2 @@
+Features sorted by their score:
+[(0.3442, 'x'), (0.2958, 'y'), (0.2295, 'sw_base'), (0.068, 'porosity'), (0.0291, 'avg_dRMS'), (0.0172, 'porosity_effective'), (0.0161, 'ntg')]

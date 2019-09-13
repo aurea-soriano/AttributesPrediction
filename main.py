@@ -92,27 +92,31 @@ class Main(object):
        
        
         
+        
+    def machine_learning_analysis(self):  
+        
+        
+        attribute_names_dsw = ["x", "y", "porosity", "porosity_effective", "ntg", "sw_base", "avg_dRMS"];
+        attribute_names_dsg = ["x", "y", "porosity", "porosity_effective", "ntg", "sg_base", "avg_dRMS"];
+        
         #np.c_[x,y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
         self.features_matrix_dsw = np.c_[self.x, self.y, self.porosity, self.porosity_effective, self.ntg, self.sw_base, self.avg_dRMS];
         self.features_matrix_dsg = np.c_[self.x, self.y, self.porosity, self.porosity_effective, self.ntg, self.sg_base, self.avg_dRMS];
-    
-    def machine_learning_analysis(self):   
+     
         #CorrelationAnalysis(self.attributes_list, self.attributes_matrix, self.attributes_names);
         
         #linearRegression = LinearRegression(self.features_matrix_dsw, self.dsw);
         #multilayerPerceptron = MultilayerPerceptron(self.features_matrix_dsw, self.dsw);
         #svRegression = SVRegression(self.features_matrix_dsw, self.dsw);
         #xgBoost = XGBoost(self.features_matrix_dsw, self.dsw);
-        attribute_names = ["x", "y", "porosity", "porosity_effective", "ntg", "sw_base", "avg_dRMS"];
-        
-        randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names);
+         
+        randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         
         #linearRegression2 = LinearRegression(self.features_matrix_dsg, self.dsg);
         #multilayerPerceptron2 = MultilayerPerceptron(self.features_matrix_dsg, self.dsg);
         #svRegression2 = SVRegression(self.features_matrix_dsg, self.dsg);
         #xgBoost2 = XGBoost(self.features_matrix_dsg, self.dsg);
-        names = ["x", "y", "porosity", "porosity_effective", "ntg", "sg_base", "avg_dRMS"];
-        randomForest = RandomForest(self.features_matrix_dsg, self.dsg, attribute_names);
+        randomForest = RandomForest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
 
 if __name__ == '__main__':
     main = Main("");

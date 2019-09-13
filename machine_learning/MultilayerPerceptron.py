@@ -17,10 +17,12 @@ class MultilayerPerceptron(object):
     '''
 
 
-    def __init__(self, _features_matrix, _target):
+    def __init__(self, _features_matrix, _target,  _attributes_names, _title):
         # defining feature matrix(X) and response vector(y) 
         self.X = _features_matrix;
         self.y = _target;
+        self.title = _title;
+        self.attributes_names = _attributes_names;
         self.prediction();
         
     def prediction(self):
@@ -33,7 +35,7 @@ class MultilayerPerceptron(object):
         test_num = X_test.shape[0];
         #Multi-layer Perceptron is sensitive to feature scaling, 
         #so it is highly recommended to scale your data.
-        #scaler = StandardScaler()  
+        #scaler = StandardScaler()  , "Target: DSW"
         # Don't cheat - fit only on training data
         #scaler.fit(X_train)  
         #X_train = scaler.transform(X_train)  
@@ -99,7 +101,7 @@ class MultilayerPerceptron(object):
         # Plot
         fig = plt.figure()
         ax1 = fig.add_subplot(111)
-        plt.title('Multilayer Perceptron');
+        plt.title('Multilayer Perceptron - '+self.title);
         plt.xlabel('Real Y');
         plt.ylabel('Predicted Y');
         #plt.xlim([-0.4,0.4]);

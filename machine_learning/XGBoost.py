@@ -17,10 +17,12 @@ class XGBoost(object):
     '''
 
 
-    def __init__(self, _features_matrix, _target):
+    def __init__(self, _features_matrix, _target, _attributes_names, _title):
         # defining feature matrix(X) and response vector(y) 
         self.X = _features_matrix;
         self.y = _target;
+        self.title = _title;
+        self.attributes_names = _attributes_names;
         self.prediction();
         
     def prediction(self):
@@ -74,7 +76,7 @@ class XGBoost(object):
         # Plot
         fig = plt.figure()
         ax1 = fig.add_subplot(111)
-        plt.title('XGBoost');
+        plt.title('XGBoost - '+self.title);
         plt.xlabel('Real Y');
         plt.ylabel('Predicted Y');
         #plt.xlim([-0.4,0.4]);

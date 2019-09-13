@@ -18,11 +18,12 @@ class RandomForest(object):
     '''
 
 
-    def __init__(self, _features_matrix, _target, _attributes_names):
+    def __init__(self, _features_matrix, _target, _attributes_names, _title):
         # defining feature matrix(X) and response vector(y) 
         self.X = _features_matrix;
         self.y = _target;
         self.attributes_names = _attributes_names;
+        self.title = _title;
         self.prediction();
         
     def prediction(self):
@@ -69,7 +70,7 @@ class RandomForest(object):
         # Plot
         fig = plt.figure()
         ax1 = fig.add_subplot(111)
-        plt.title('Random Forest Regression');
+        plt.title('Random Forest - '+self.title);
         plt.xlabel('Real Y');
         plt.ylabel('Predicted Y');
         ax1.scatter(np.array(y_train_pred), np.array(y_train), s=20, c='b', alpha=0.5,  label='StdError: '+ str(round(std_train_error,4)) + ' R2: ' + str(round(r2_score_train,4)));
