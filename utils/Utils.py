@@ -6,6 +6,7 @@ Created on Sep 11, 2019
 
 import numpy as np 
 import scipy
+from scipy import misc
 
 class Utils(object):
     '''
@@ -80,8 +81,49 @@ class Utils(object):
         fileReader.close();
         fileWriter.close();
         
+    @staticmethod
+    def interpolated_drms_resolution():
+        '''
+        Constructor
+        '''
+        input_file = "../data/dRMS";
+        output_file = "../data/int_dRMS";
+        fileReader = open(input_file, "r");
+        fileWriter= open(output_file,"w+");
+        rows_vector = [];
+        count = 0;
+        for line in fileReader: 
+            if(count<20):
+                fileWriter.write(line);
+            else:
+                text = line.split(' ');
+                vector = np.array(text);
+                vector = vector.astype(np.float);
+                rows_vector.append(vector)
+            count+=1;        
+       
+        A = np.array(rows_vector)
+        print(A.shape)
+        
+        B = misc.imresize(A, [18455,5], interp='bilinear', mode='F')
+                    
+        print(B.shape)
+        
+        for i in range(0, B.shape[0]):
+            for j in range(0, B.shape[1]):
+                fileWriter.write(str(B[i][j]));
+                if(j  != B.shape[1]-1):
+                    fileWriter.write(" ");
+            fileWriter.write("\n");
+        
+        fileReader.close();
+        fileWriter.close();
+        
 if __name__ == '__main__':
-    Utils.average_drms_resolution();
+    #Utils.average_drms_resolution();
+    Utils.interpolated_drms_resolution();
+    
+    
               
         
         

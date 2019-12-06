@@ -25,7 +25,7 @@ class Main(object):
         '''
         Constructor
         '''
-        self.attributes_files = ["Porosity", "Porosity-Effective Ref", "NTG", "Sw_base", "Sg_Base", "dSg", "dSw", "avg_dRMS"];
+        self.attributes_files = ["Porosity", "Porosity-Effective Ref", "NTG", "Sw_base", "Sg_Base", "dSg", "dSw", "avg_dRMS", "int_dRMS"];
         
         self.training_matrix = []
         self.x = []
@@ -38,6 +38,7 @@ class Main(object):
         self.dsg = []
         self.dsw = []
         self.avg_dRMS = []
+        self.int_dRMS = []
         self.xdRMS = []
         self.ydRMS = []
         self. attributes_list = []
@@ -79,16 +80,17 @@ class Main(object):
         self.dsw = np.squeeze(np.asarray(dswMatrix[:,2]));
         
         
-        # reading dsw 
+        # reading dRMS 
         avg_dRMSMatrix = FileReader.read("data/"+self.attributes_files[7], 20);
         self.xdRMS = np.squeeze(np.asarray(avg_dRMSMatrix[0:len(self.dsw),0]));
         self.ydRMS = np.squeeze(np.asarray(avg_dRMSMatrix[0:len(self.dsw),1]));
         self.avg_dRMS= np.squeeze(np.asarray(avg_dRMSMatrix[0:len(self.dsw),2]));
         
-        
-        self.attributes_list = [self.x, self.y, self.porosity, self.porosity_effective, self.ntg, self.sw_base, self.sg_base, self.dsg, self.dsw, self.avg_dRMS];
-        self.attributes_matrix = np.c_[self.x, self.y, self.porosity, self.porosity_effective, self.ntg, self.sw_base, self.sg_base, self.dsg, self.dsw, self.avg_dRMS];
-        self.attributes_names = ["x", "y", "Porosity", "Porosity-Eff", "NTG", "Sw_base", "Sg_Base", "dSg", "dSw", "avg_dRMS"];
+        # reading dRMS 
+        int_dRMSMatrix = FileReader.read("data/"+self.attributes_files[8], 20);
+        self.xdRMS = np.squeeze(np.asarray(int_dRMSMatrix[0:len(self.dsw),0]));
+        self.ydRMS = np.squeeze(np.asarray(int_dRMSMatrix[0:len(self.dsw),1]));
+        self.int_dRMS= np.squeeze(np.asarray(int_dRMSMatrix[0:len(self.dsw),2]));
        
        
         
@@ -96,27 +98,32 @@ class Main(object):
     def machine_learning_analysis(self):  
         
         
-        attribute_names_dsw = ["x", "y", "porosity", "porosity_effective", "ntg", "sw_base", "avg_dRMS"];
-        attribute_names_dsg = ["x", "y", "porosity", "porosity_effective", "ntg", "sg_base", "avg_dRMS"];
+        attribute_names_dsw = ["x","y", "int_dRMS"];
+        attribute_names_dsg = ["x","y", "int_dRMS"];
+        attributes_list = [self.x, self.y, self.dsg, self.dsw, self.int_dRMS];
+        attributes_matrix = np.c_[self.x, self.y, self.dsg, self.dsw, self.int_dRMS];
+        attributes_names = ["x","y","dSg", "dSw", "int_dRMS"];
+       
+        
         
         #np.c_[x,y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
-        self.features_matrix_dsw = np.c_[self.x, self.y, self.porosity, self.porosity_effective, self.ntg, self.sw_base, self.avg_dRMS];
-        self.features_matrix_dsg = np.c_[self.x, self.y, self.porosity, self.porosity_effective, self.ntg, self.sg_base, self.avg_dRMS];
+        self.features_matrix_dsw = np.c_[self.x, self.y,self.int_dRMS];
+        self.features_matrix_dsg = np.c_[self.x, self.y,self.int_dRMS];
      
-        #CorrelationAnalysis(self.attributes_list, self.attributes_matrix, self.attributes_names);
+        CorrelationAnalysis(attributes_list, attributes_matrix, attributes_names);
         
-        #linearRegression = LinearRegression(self.features_matrix_dsw, self.dsw);
-        #multilayerPerceptron = MultilayerPerceptron(self.features_matrix_dsw, self.dsw);
-        #svRegression = SVRegression(self.features_matrix_dsw, self.dsw);
-        #xgBoost = XGBoost(self.features_matrix_dsw, self.dsw);
+        linearRegression = LinearRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
+        multilayerPerceptron = MultilayerPerceptron(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
+        svRegression = SVRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
+        xgBoost = XGBoost(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
          
         randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         
-        #linearRegression2 = LinearRegression(self.features_matrix_dsg, self.dsg);
-        #multilayerPerceptron2 = MultilayerPerceptron(self.features_matrix_dsg, self.dsg);
-        #svRegression2 = SVRegression(self.features_matrix_dsg, self.dsg);
-        #xgBoost2 = XGBoost(self.features_matrix_dsg, self.dsg);
-        randomForest = RandomForest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
+        linearRegression2 = LinearRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
+        multilayerPerceptron2 = MultilayerPerceptron(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
+        svRegression2 = SVRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
+        xgBoost2 = XGBoost(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
+        randomForest2 = RandomForest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
 
 if __name__ == '__main__':
     main = Main("");
