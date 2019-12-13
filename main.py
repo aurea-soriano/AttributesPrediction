@@ -112,15 +112,15 @@ class Main(object):
 
         attribute_names_dsw = ["x","y", "int_dRMS"];
         attribute_names_dsg = ["x","y", "int_dRMS"];
-        attributes_list = [self.x, self.y, self.dsg, self.dsw, self.int_dRMS_10];
-        attributes_matrix = np.c_[self.x, self.y, self.dsg, self.dsw, self.int_dRMS_10];
+        attributes_list = [self.x, self.y, self.dsg, self.dsw, self.int_dRMS_20];
+        attributes_matrix = np.c_[self.x, self.y, self.dsg, self.dsw, self.int_dRMS_20];
         attributes_names = ["x","y","dSg", "dSw", "int_dRMS"];
 
 
 
         #np.c_[x,y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
-        self.features_matrix_dsw = np.c_[self.x, self.y,self.int_dRMS_10];
-        self.features_matrix_dsg = np.c_[self.x, self.y,self.int_dRMS_10];
+        self.features_matrix_dsw = np.c_[self.x, self.y,self.int_dRMS_20];
+        self.features_matrix_dsg = np.c_[self.x, self.y,self.int_dRMS_20];
 
         CorrelationAnalysis(attributes_list, attributes_matrix, attributes_names);
 
