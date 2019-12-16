@@ -27,15 +27,15 @@ class FileReader(object):
                 old_x = int(text[0]);
                 old_y = int(text[1]);
                 matrix_x = np.empty((old_x, old_y));
-                matrix_x[:] = numpy.nan
+                matrix_x[:] = np.nan
                 matrix_y = np.empty((old_x, old_y));
-                matrix_y[:] = numpy.nan
+                matrix_y[:] = np.nan
                 matrix_value = np.empty((old_x, old_y));
-                matrix_value[:] = numpy.nan
+                matrix_value[:] = np.nan
                 matrix_col = np.empty((old_x, old_y));
-                matrix_col[:] = numpy.nan
+                matrix_col[:] = np.nan
                 matrix_row = np.empty((old_x, old_y));
-                matrix_row[:] = numpy.nan
+                matrix_row[:] = np.nan
 
             elif count>from_line:
                 text = line.split(' ');

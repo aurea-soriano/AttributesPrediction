@@ -16,7 +16,7 @@ from utils.Metrics import Metrics
 import numpy as np
 from scipy.spatial.transform import rotation
 import matplotlib.pyplot as plt
-
+import math
 
 class Main(object):
     '''
@@ -62,49 +62,70 @@ class Main(object):
         # reading Porosity
         porosityMatrices = FileReader.read("data/"+self.attributes_files[0], 20);
         self.x_size, self.y_size = porosityMatrices[0].shape;
-        self.x = porosityMatrices[0].flatten();
-        self.y = porosityMatrices[1].flatten();
-        self.porosity = porosityMatrices[2].flatten();
-        self.col = porosityMatrices[3].flatten();
-        self.row = porosityMatrices[4].flatten();
+        x = porosityMatrices[0].flatten();
+        y = porosityMatrices[1].flatten();
+        porosity = porosityMatrices[2].flatten();
+        col = porosityMatrices[3].flatten();
+        row = porosityMatrices[4].flatten();
 
         # reading Porosity-effective
         porosityEffectiveMatrix = FileReader.read("data/"+self.attributes_files[1], 20);
-        self.porosity_effective = porosityEffectiveMatrix[2].flatten();
+        porosity_effective = porosityEffectiveMatrix[2].flatten();
 
         # reading ntglinear_model,
         ntgMatrix = FileReader.read("data/"+self.attributes_files[2], 20);
-        self.ntg = ntgMatrix[2].flatten();
+        ntg = ntgMatrix[2].flatten();
 
         # reading sw_base
         swBaseMatrix = FileReader.read("data/"+self.attributes_files[3], 20);
-        self.sw_base = swBaseMatrix[2].flatten();
+        sw_base = swBaseMatrix[2].flatten();
 
         # reading sg_base
         sgBaseMatrix = FileReader.read("data/"+self.attributes_files[4], 20);
-        self.sg_base = sgBaseMatrix[2].flatten();
+        sg_base = sgBaseMatrix[2].flatten();
 
         # reading dsg
         dsgMatrix = FileReader.read("data/"+self.attributes_files[5], 20);
-        self.dsg = dsgMatrix[2].flatten();
+        dsg = dsgMatrix[2].flatten();
 
         # reading dsw
         dswMatrix = FileReader.read("data/"+self.attributes_files[6], 20);
-        self.dsw = dswMatrix[2].flatten();
+        dsw = dswMatrix[2].flatten();
 
 
         # reading actual dRMS
         int_dRMSMatrix_10 = FileReader.read("data/"+self.attributes_files[7], 20);
-        self.xdRMS = int_dRMSMatrix_10[0].flatten();
-        self.ydRMS = int_dRMSMatrix_10[1].flatten();
-        self.int_dRMS_10= int_dRMSMatrix_10[2].flatten();
+        xdRMS = int_dRMSMatrix_10[0].flatten();
+        ydRMS = int_dRMSMatrix_10[1].flatten();
+        int_dRMS_10= int_dRMSMatrix_10[2].flatten();
 
         # reading actual dRMS
         int_dRMSMatrix_20 = FileReader.read("data/"+self.attributes_files[8], 20);
-        self.xdRMS = int_dRMSMatrix_20[0].flatten();
-        self.ydRMS = int_dRMSMatrix_20[1].flatten();
-        self.int_dRMS_20= int_dRMSMatrix_20[2].flatten();
+        xdRMS = int_dRMSMatrix_20[0].flatten();
+        ydRMS = int_dRMSMatrix_20[1].flatten();
+        int_dRMS_20= int_dRMSMatrix_20[2].flatten();
 
+
+        for i in range(len(x)):
+            if math.isnan(x[i]) or math.isnan(y[i]) or math.isnan(porosity[i]) or math.isnan(porosity_effective[i]) or math.isnan(ntg[i]) or math.isnan(sw_base[i]) or math.isnan(sg_base[i]) or math.isnan(dsg[i]) or math.isnan(dsw[i]) or math.isnan(xdRMS[i]) or  math.isnan(ydRMS[i]) or math.isnan(int_dRMS_10[i]) or math.isnan(int_dRMS_20[i]):
+                #nothing
+                print("")
+            else:
+                self.x.append(x[i])
+                self.y.append(y[i])
+                self.porosity.append(porosity[i])
+                self.porosity_effective.append(porosity_effective[i])
+                self.col.append(col[i])
+                self.row.append(row[i])
+                self.ntg.append(ntg[i])
+                self.sw_base.append(sw_base[i])
+                self.sg_base.append(sg_base[i])
+                self.dsg.append(dsg[i])
+                self.dsw.append(dsw[i])
+                self.xdRMS.append(xdRMS[i])
+                self.ydRMS.append(ydRMS[i])
+                self.int_dRMS_10.append(int_dRMS_10[i])
+                self.int_dRMS_20.append(int_dRMS_20[i])
 
     def machine_learning_analysis(self):
 
@@ -130,7 +151,8 @@ class Main(object):
         #xgBoost = XGBoost(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         predicted_matrix = np.empty((self.x_size, self.y_size));
-        predicted_matrix[:] = numpy.nan
+        predicted_matrix[:] = np.nan
+        print(len(randomForest.predicted_y))
         for x in range(len(randomForest.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
         plt.imshow(predicted_matrix);
@@ -144,7 +166,7 @@ class Main(object):
         #xgBoost2 = XGBoost(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
         randomForest2 = RandomForest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
         predicted_matrix = np.empty((self.x_size, self.y_size));
-        predicted_matrix[:] = numpy.nan
+        predicted_matrix[:] = np.nan
         for x in range(len(randomForest2.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest2.predicted_y[x];
         plt.imshow(predicted_matrix);
@@ -173,7 +195,7 @@ class Main(object):
         #xgBoost = XGBoost(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         predicted_matrix = np.empty((self.x_size, self.y_size));
-        predicted_matrix[:] = numpy.nan
+        predicted_matrix[:] = np.nan
         for x in range(len(randomForest.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
         plt.imshow(predicted_matrix);
@@ -186,7 +208,7 @@ class Main(object):
         #xgBoost2 = XGBoost(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
         randomForest2 = RandomForest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
         predicted_matrix = np.empty((self.x_size, self.y_size));
-        predicted_matrix[:] = numpy.nan
+        predicted_matrix[:] = np.nan
         for x in range(len(randomForest2.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest2.predicted_y[x];
         plt.imshow(predicted_matrix);

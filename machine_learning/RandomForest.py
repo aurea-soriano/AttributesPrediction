@@ -29,11 +29,11 @@ class RandomForest(object):
 
     def prediction(self):
         print('****************Random Forest****************');
+
+
         # splitting X and y into training and testing sets
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.3)
 
-        train_num = X_train.shape[0];
-        test_num = X_test.shape[0];
 
         # create regression object
         reg = RandomForestRegressor(random_state=42,n_estimators=100)
