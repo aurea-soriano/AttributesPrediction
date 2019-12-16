@@ -121,7 +121,6 @@ class Main(object):
         multilayerPerceptron = MultilayerPerceptron(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         svRegression = SVRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         xgBoost = XGBoost(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-
         randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
 
         linearRegression2 = LinearRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
@@ -151,7 +150,6 @@ class Main(object):
         multilayerPerceptron = MultilayerPerceptron(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         svRegression = SVRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         xgBoost = XGBoost(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-
         randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
 
         linearRegression2 = LinearRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
