@@ -170,8 +170,9 @@ class Utils(object):
 
             for i in range(0, matrix_x.shape[0]):
                 for j in range(0, matrix_x.shape[1]):
-                    fileWriter.write(str(matrix_x[i][j])+" "+str(matrix_y[i][j])+" "+
-                    str(matrix_value[i][j])+" "+str(i+1)+" "+str(j+1)+"\n");
+                    if(matrix_x[i][j]>0.0 and matrix_y[i][j]>0.0):
+                        fileWriter.write(str(matrix_x[i][j])+" "+str(matrix_y[i][j])+" "+
+                        str(matrix_value[i][j])+" "+str(i+1)+" "+str(j+1)+"\n");
 
             fileReader.close();
             fileWriter.close();
@@ -179,4 +180,4 @@ class Utils(object):
 if __name__ == '__main__':
     #Utils.average_drms_resolution();
     #Utils.interpolated_drms_resolution();
-    Utils.fair_interpolated_drms_resolution(193, 151, "../data/dRMS_10m", "../data/fair_int_dRMS_10m");
+    Utils.fair_interpolated_drms_resolution(193, 151, "../data/dRMS_20m", "../data/fair_int_dRMS_20m");
