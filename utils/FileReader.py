@@ -26,11 +26,16 @@ class FileReader(object):
                 text = text[1].split('x');
                 old_x = int(text[0]);
                 old_y = int(text[1]);
-                matrix_x = np.zeros((old_x, old_y));
-                matrix_y = np.zeros((old_x, old_y));
-                matrix_value = np.zeros((old_x, old_y));
-                matrix_col = np.zeros((old_x, old_y));
-                matrix_row = np.zeros((old_x, old_y));
+                matrix_x = np.empty((old_x, old_y));
+                matrix_x[:] = numpy.nan
+                matrix_y = np.empty((old_x, old_y));
+                matrix_y[:] = numpy.nan
+                matrix_value = np.empty((old_x, old_y));
+                matrix_value[:] = numpy.nan
+                matrix_col = np.empty((old_x, old_y));
+                matrix_col[:] = numpy.nan
+                matrix_row = np.empty((old_x, old_y));
+                matrix_row[:] = numpy.nan
 
             elif count>from_line:
                 text = line.split(' ');

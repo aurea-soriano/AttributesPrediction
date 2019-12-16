@@ -129,7 +129,8 @@ class Main(object):
         #svRegression = SVRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         #xgBoost = XGBoost(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        predicted_matrix = np.zeros((self.x_size, self.y_size));
+        predicted_matrix = np.empty((self.x_size, self.y_size));
+        predicted_matrix[:] = numpy.nan
         for x in range(len(randomForest.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
         plt.imshow(predicted_matrix);
@@ -142,7 +143,8 @@ class Main(object):
         #svRegression2 = SVRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
         #xgBoost2 = XGBoost(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
         randomForest2 = RandomForest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        predicted_matrix = np.zeros((self.x_size, self.y_size));
+        predicted_matrix = np.empty((self.x_size, self.y_size));
+        predicted_matrix[:] = numpy.nan
         for x in range(len(randomForest2.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest2.predicted_y[x];
         plt.imshow(predicted_matrix);
@@ -170,7 +172,8 @@ class Main(object):
         #svRegression = SVRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         #xgBoost = XGBoost(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        predicted_matrix = np.zeros((self.x_size, self.y_size));
+        predicted_matrix = np.empty((self.x_size, self.y_size));
+        predicted_matrix[:] = numpy.nan
         for x in range(len(randomForest.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
         plt.imshow(predicted_matrix);
@@ -182,7 +185,8 @@ class Main(object):
         #svRegression2 = SVRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
         #xgBoost2 = XGBoost(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
         randomForest2 = RandomForest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        predicted_matrix = np.zeros((self.x_size, self.y_size));
+        predicted_matrix = np.empty((self.x_size, self.y_size));
+        predicted_matrix[:] = numpy.nan
         for x in range(len(randomForest2.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest2.predicted_y[x];
         plt.imshow(predicted_matrix);
