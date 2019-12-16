@@ -139,8 +139,8 @@ class Main(object):
 
 
         #np.c_[x,y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
-        self.features_matrix_dsw = np.c_[self.int_dRMS_10];#np.c_[self.x, self.y,self.int_dRMS_10];
-        self.features_matrix_dsg = np.c_[self.int_dRMS_10];#np.c_[self.x, self.y,self.int_dRMS_10];
+        self.features_matrix_dsw = np.c_[self.x, self.y,self.int_dRMS_10]; #np.c_[self.int_dRMS_10];#
+        self.features_matrix_dsg = np.c_[self.x, self.y,self.int_dRMS_10]; #np.c_[self.int_dRMS_10];#
 
 
         #CorrelationAnalysis(attributes_list, attributes_matrix, attributes_names);
@@ -183,8 +183,8 @@ class Main(object):
 
 
         #np.c_[x,y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
-        self.features_matrix_dsw = np.c_[self.int_dRMS_20];#np.c_[self.x, self.y,self.int_dRMS_20];
-        self.features_matrix_dsg = np.c_[self.int_dRMS_20];#np.c_[self.x, self.y,self.int_dRMS_20];
+        self.features_matrix_dsw = np.c_[self.x, self.y,self.int_dRMS_20];#np.c_[self.int_dRMS_20];#
+        self.features_matrix_dsg = np.c_[self.x, self.y,self.int_dRMS_20];#np.c_[self.int_dRMS_20];#
 
 
         #CorrelationAnalysis(attributes_list, attributes_matrix, attributes_names);
