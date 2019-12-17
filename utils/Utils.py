@@ -7,6 +7,7 @@ Created on Sep 11, 2019
 import numpy as np
 import scipy
 from scipy import misc
+import math
 
 class Utils(object):
     '''
@@ -146,11 +147,11 @@ class Utils(object):
                     text = text[1].split('x');
                     old_x = int(text[0]);
                     old_y = int(text[1]);
-                    matrix_x = np.zeros((old_x, old_y));
-                    matrix_y = np.zeros((old_x, old_y));
-                    matrix_value = np.zeros((old_x, old_y));
-                    matrix_col = np.zeros((old_x, old_y));
-                    matrix_row = np.zeros((old_x, old_y));
+                    matrix_x = np.empty((old_x, old_y));
+                    matrix_y = np.empty((old_x, old_y));
+                    matrix_value = np.empty((old_x, old_y));
+                    matrix_col = np.empty((old_x, old_y));
+                    matrix_row = np.empty((old_x, old_y));
 
                     fileWriter.write("# Grid_size: "+str(new_x)+ " x "+ str(new_y)+"\n");
                 else:
@@ -172,7 +173,7 @@ class Utils(object):
 
             for i in range(0, matrix_x.shape[0]):
                 for j in range(0, matrix_x.shape[1]):
-                    if(matrix_x[i][j]>0.0 and matrix_y[i][j]>0.0):
+                    if(not math.isnan(matrix_value[i][j])):
                         fileWriter.write(str(matrix_x[i][j])+" "+str(matrix_y[i][j])+" "+
                         str(matrix_value[i][j])+" "+str(i+1)+" "+str(j+1)+"\n");
 

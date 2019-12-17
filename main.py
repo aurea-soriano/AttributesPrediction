@@ -156,7 +156,7 @@ class Main(object):
         print(len(randomForest.predicted_y))
         for x in range(len(randomForest.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
-        plt.imshow(predicted_matrix);
+        plt.imshow(np.flip(predicted_matrix), cmap=plt.get_cmap("seismic"),  vmin=-0.3, vmax=0.3);
         plt.colorbar()
         plt.show()
 
@@ -170,7 +170,7 @@ class Main(object):
         predicted_matrix[:] = np.nan
         for x in range(len(randomForest2.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest2.predicted_y[x];
-        plt.imshow(predicted_matrix);
+        plt.imshow(predicted_matrix, cmap=plt.get_cmap("seismic"),  vmin=-0.05, vmax=0.05);
         plt.colorbar()
         plt.show()
 
@@ -199,7 +199,7 @@ class Main(object):
         predicted_matrix[:] = np.nan
         for x in range(len(randomForest.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
-        plt.imshow(predicted_matrix);
+        plt.imshow(predicted_matrix, cmap=plt.get_cmap("seismic"), vmin=-0.5, vmax=0.5);
         plt.colorbar()
         plt.show()
 
@@ -212,7 +212,7 @@ class Main(object):
         predicted_matrix[:] = np.nan
         for x in range(len(randomForest2.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest2.predicted_y[x];
-        plt.imshow(predicted_matrix);
+        plt.imshow(predicted_matrix, cmap=plt.get_cmap("seismic"),  vmin=-0.05, vmax=0.05);
         plt.colorbar()
         plt.show()
 
@@ -244,7 +244,7 @@ class Main(object):
         print(len(randomForest.predicted_y))
         for x in range(len(randomForest.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
-        plt.imshow(predicted_matrix);
+        plt.imshow(predicted_matrix, cmap=plt.get_cmap("seismic"),  vmin=-0.5, vmax=0.5);
         plt.colorbar()
         plt.show()
 
@@ -258,7 +258,7 @@ class Main(object):
         predicted_matrix[:] = np.nan
         for x in range(len(randomForest2.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest2.predicted_y[x];
-        plt.imshow(predicted_matrix);
+        plt.imshow(predicted_matrix, cmap=plt.get_cmap("seismic"),  vmin=-0.05, vmax=0.05);
         plt.colorbar()
         plt.show()
 
@@ -287,7 +287,7 @@ class Main(object):
         predicted_matrix[:] = np.nan
         for x in range(len(randomForest.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
-        plt.imshow(predicted_matrix);
+        plt.imshow(predicted_matrix, cmap=plt.get_cmap("seismic"),  vmin=-0.5, vmax=0.5);
         plt.colorbar()
         plt.show()
 
@@ -300,7 +300,7 @@ class Main(object):
         predicted_matrix[:] = np.nan
         for x in range(len(randomForest2.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest2.predicted_y[x];
-        plt.imshow(predicted_matrix);
+        plt.imshow(predicted_matrix, cmap=plt.get_cmap("seismic"),  vmin=-0.05, vmax=0.05);
         plt.colorbar()
         plt.show()
 
