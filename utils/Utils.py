@@ -155,11 +155,13 @@ class Utils(object):
                     fileWriter.write("# Grid_size: "+str(new_x)+ " x "+ str(new_y)+"\n");
                 else:
                     text = line.split(' ');
-                    matrix_x[int(text[3])-1][int(text[4])-1] = float(text[0]);
-                    matrix_y[int(text[3])-1][int(text[4])-1] = float(text[1]);
-                    matrix_value[int(text[3])-1][int(text[4])-1] = float(text[2]);
-                    matrix_col[int(text[3])-1][int(text[4])-1] = float(text[3]);
-                    matrix_row[int(text[3])-1][int(text[4])-1] = float(text[4]);
+                    pos_x = round(float(text[3]))-1;
+                    pos_y = round(float(text[4]))-1;
+                    matrix_x[pos_x][pos_y] = float(text[0]);
+                    matrix_y[pos_x][pos_y] = float(text[1]);
+                    matrix_value[pos_x][pos_y] = float(text[2]);
+                    matrix_col[pos_x][pos_y] = round(float(text[3]));
+                    matrix_row[pos_x][pos_y] = round(float(text[4]));
                 count+=1;
 
             matrix_x = misc.imresize(matrix_x, [new_x,new_y], interp='bilinear', mode='F')
@@ -180,4 +182,5 @@ class Utils(object):
 if __name__ == '__main__':
     #Utils.average_drms_resolution();
     #Utils.interpolated_drms_resolution();
+    Utils.fair_interpolated_drms_resolution(193, 151, "../data/dRMS_10m", "../data/fair_int_dRMS_10m");
     Utils.fair_interpolated_drms_resolution(193, 151, "../data/dRMS_20m", "../data/fair_int_dRMS_20m");
