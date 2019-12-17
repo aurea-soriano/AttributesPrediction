@@ -5,6 +5,7 @@ Created on Sep 7, 2019
 '''
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 class FileReader(object):
     '''
@@ -56,8 +57,12 @@ class FileReader(object):
 
 
 def main():
-    dsg = FileReader.read("../data/avg_dRMS", 20);#
-    print(dsg)
+    current_cmap = plt.get_cmap("seismic")
+    current_cmap.set_bad(color='black')
+    ds2 = FileReader.read("../data/dSw", 20);#
+    plt.imshow(np.rot90(ds2[2]), current_cmap,  vmin=-0.5, vmax=0.5);
+    plt.colorbar()
+    plt.show()
 
 if __name__ == '__main__':
     main();
