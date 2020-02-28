@@ -12,6 +12,7 @@ from machine_learning.SVRegression import SVRegression
 from machine_learning.XGBoost import XGBoost
 from machine_learning.CorrelationAnalysis import CorrelationAnalysis
 from machine_learning.RandomForest import RandomForest
+from machine_learning.RandomForestOtherTest import RandomForestOtherTest
 from utils.Metrics import Metrics
 import numpy as np
 from scipy.spatial.transform import rotation
@@ -29,7 +30,7 @@ class Main(object):
         Constructor
         '''
         self.attributes_files = ["Porosity", "Porosity-Effective Ref", "NTG", "Sw_base",
-        "Sg_Base", "dSg", "dSw", "fair_int_dRMS_10m", "fair_int_dRMS_20m"];
+        "Sg_Base", "dSg", "dSw", "fair_int_dRMS_10m", "fair_int_dRMS_20m", "fair_int_dRMS"];
 
         self.training_matrix = []
         self.x = []
@@ -44,12 +45,12 @@ class Main(object):
         self.dsg = []
         self.dsw = []
         self.avg_dRMS = []
-        self.int_dRMS = []
-        self.int_dRMS_10 = []
-        self.int_dRMS_20 = []
+        self.fair_int_dRMS = []
+        self.fair_int_dRMS_10m = []
         self.xdRMS = []
+        self.fair_int_dRMS_20m = []
         self.ydRMS = []
-        self. attributes_list = []
+        self.attributes_list = []
         self.attributes_matrix= []
         self.attributes_names = []
         self.features_matrix_dsw = []
@@ -94,20 +95,26 @@ class Main(object):
 
 
         # reading actual dRMS
-        int_dRMSMatrix_10 = FileReader.read("data/"+self.attributes_files[7], 20);
-        xdRMS = int_dRMSMatrix_10[0].flatten();
-        ydRMS = int_dRMSMatrix_10[1].flatten();
-        int_dRMS_10= int_dRMSMatrix_10[2].flatten();
+        fair_int_dRMSMatrix_10m = FileReader.read("data/"+self.attributes_files[7], 20);
+        xdRMS = fair_int_dRMSMatrix_10m[0].flatten();
+        ydRMS = fair_int_dRMSMatrix_10m[1].flatten();
+        fair_int_dRMS_10m= fair_int_dRMSMatrix_10m[2].flatten();
 
         # reading actual dRMS
-        int_dRMSMatrix_20 = FileReader.read("data/"+self.attributes_files[8], 20);
-        xdRMS = int_dRMSMatrix_20[0].flatten();
-        ydRMS = int_dRMSMatrix_20[1].flatten();
-        int_dRMS_20= int_dRMSMatrix_20[2].flatten();
+        fair_int_dRMSMatrix_20m = FileReader.read("data/"+self.attributes_files[8], 20);
+        xdRMS = fair_int_dRMSMatrix_20m[0].flatten();
+        ydRMS = fair_int_dRMSMatrix_20m[1].flatten();
+        fair_int_dRMS_20m= fair_int_dRMSMatrix_20m[2].flatten();
+
+        # reading synthetic dRMS
+        fair_int_dRMSMatrix = FileReader.read("data/"+self.attributes_files[9], 20);
+        xdRMS = fair_int_dRMSMatrix[0].flatten();
+        ydRMS = fair_int_dRMSMatrix[1].flatten();
+        fair_int_dRMS= fair_int_dRMSMatrix[2].flatten();
 
 
         for i in range(len(x)):
-            if math.isnan(x[i]) or math.isnan(y[i]) or math.isnan(dsg[i]) or math.isnan(dsw[i]) or math.isnan(xdRMS[i]) or  math.isnan(ydRMS[i]) or math.isnan(int_dRMS_10[i]) or math.isnan(int_dRMS_20[i]):
+            if math.isnan(x[i]) or math.isnan(y[i]) or math.isnan(dsg[i]) or math.isnan(dsw[i]) or math.isnan(xdRMS[i]) or  math.isnan(ydRMS[i]) or math.isnan(fair_int_dRMS_10m[i]) or math.isnan(fair_int_dRMS_20m[i]) or math.isnan(fair_int_dRMS[i]):
                 #nothing
                 print("")
             else:
@@ -124,35 +131,25 @@ class Main(object):
                 self.dsw.append(dsw[i])
                 self.xdRMS.append(xdRMS[i])
                 self.ydRMS.append(ydRMS[i])
-                self.int_dRMS_10.append(int_dRMS_10[i])
-                self.int_dRMS_20.append(int_dRMS_20[i])
+                self.fair_int_dRMS_10m.append(fair_int_dRMS_10m[i])
+                self.fair_int_dRMS_20m.append(fair_int_dRMS_20m[i])
+                self.fair_int_dRMS.append(fair_int_dRMS[i])
 
     def machine_learning_analysis(self):
 
         current_cmap = plt.get_cmap("seismic")
         current_cmap.set_bad(color='black')
 
-        # dRMS
-        #10
-        attribute_names_dsw = ["x","y", "int_dRMS"];
-        attribute_names_dsg = ["x","y", "int_dRMS"];
-        attributes_list = [self.x, self.y, self.dsg, self.dsw, self.int_dRMS_10];
-        attributes_matrix = np.c_[self.x, self.y, self.dsg, self.dsw, self.int_dRMS_10];
-        attributes_names = ["x","y","dSg", "dSw", "int_dRMS"];
-
+        attribute_names_dsw = ["fair_int_dRMS"];
+        attribute_names_dsg = ["fair_int_dRMS"];
 
 
         #np.c_[x,y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
-        self.features_matrix_dsw = np.c_[self.int_dRMS_10];#
-        self.features_matrix_dsg = np.c_[self.int_dRMS_10];#
+        self.features_matrix_dsw = np.c_[self.fair_int_dRMS];#
+        self.features_matrix_dsg = np.c_[self.fair_int_dRMS];#
 
 
-        #CorrelationAnalysis(attributes_list, attributes_matrix, attributes_names);
 
-        #linearRegression = LinearRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #multilayerPerceptron = MultilayerPerceptron(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #svRegression = SVRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #xgBoost = XGBoost(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
         predicted_matrix = np.empty((self.x_size, self.y_size));
         predicted_matrix[:] = np.nan
@@ -160,6 +157,14 @@ class Main(object):
         for x in range(len(randomForest.predicted_y)):
             predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
         plt.imshow(np.rot90(predicted_matrix), current_cmap,  vmin=-0.5, vmax=0.5);
+        plt.colorbar()
+        plt.show()
+
+        dsw_matrix = np.empty((self.x_size, self.y_size));
+        dsw_matrix[:] = np.nan
+        for x in range(len(self.dsw)):
+            dsw_matrix[int(self.col[x])-1][int(self.row[x])-1]= self.dsw[x];
+        plt.imshow(np.rot90(dsw_matrix), current_cmap,  vmin=-0.5, vmax=0.5);
         plt.colorbar()
         plt.show()
 
@@ -177,133 +182,86 @@ class Main(object):
         plt.colorbar()
         plt.show()
 
-        #20
-        attribute_names_dsw = ["x","y", "int_dRMS"];
-        attribute_names_dsg = ["x","y", "int_dRMS"];
-        attributes_list = [self.x, self.y, self.dsg, self.dsw, self.int_dRMS_20];
-        attributes_matrix = np.c_[self.x, self.y, self.dsg, self.dsw, self.int_dRMS_20];
-        attributes_names = ["x","y","dSg", "dSw", "int_dRMS"];
-
-
-
-        #np.c_[x,y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
-        self.features_matrix_dsw = np.c_[self.int_dRMS_20];#
-        self.features_matrix_dsg = np.c_[self.int_dRMS_20];#
-
-
-        #CorrelationAnalysis(attributes_list, attributes_matrix, attributes_names);
-
-        #linearRegression = LinearRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #multilayerPerceptron = MultilayerPerceptron(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #svRegression = SVRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #xgBoost = XGBoost(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        predicted_matrix = np.empty((self.x_size, self.y_size));
-        predicted_matrix[:] = np.nan
-        for x in range(len(randomForest.predicted_y)):
-            predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
-        plt.imshow(np.rot90(predicted_matrix), current_cmap, vmin=-0.5, vmax=0.5);
+        dsg_matrix = np.empty((self.x_size, self.y_size));
+        dsg_matrix[:] = np.nan
+        for x in range(len(self.dsg)):
+            dsg_matrix[int(self.col[x])-1][int(self.row[x])-1]= self.dsg[x];
+        plt.imshow(np.rot90(dsg_matrix), current_cmap,  vmin=-0.5, vmax=0.5);
         plt.colorbar()
         plt.show()
 
-        #linearRegression2 = LinearRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        #multilayerPerceptron2 = MultilayerPerceptron(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        #svRegression2 = SVRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        #xgBoost2 = XGBoost(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        randomForest2 = RandomForest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        predicted_matrix = np.empty((self.x_size, self.y_size));
-        predicted_matrix[:] = np.nan
-        for x in range(len(randomForest2.predicted_y)):
-            predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest2.predicted_y[x];
-        plt.imshow(np.rot90(predicted_matrix), current_cmap,  vmin=-0.05, vmax=0.05);
+
+        drms_matrix = np.empty((self.x_size, self.y_size));
+        drms_matrix[:] = np.nan
+        for x in range(len(self.fair_int_dRMS)):
+            drms_matrix[int(self.col[x])-1][int(self.row[x])-1]= self.fair_int_dRMS[x];
+        plt.imshow(np.rot90(drms_matrix), current_cmap,  vmin=-50000, vmax=50000);
         plt.colorbar()
         plt.show()
 
-        # X Y DRMS
-
-        #10
-        attribute_names_dsw = ["x","y", "int_dRMS"];
-        attribute_names_dsg = ["x","y", "int_dRMS"];
-        attributes_list = [self.x, self.y, self.dsg, self.dsw, self.int_dRMS_10];
-        attributes_matrix = np.c_[self.x, self.y, self.dsg, self.dsw, self.int_dRMS_10];
-        attributes_names = ["x","y","dSg", "dSw", "int_dRMS"];
-
+        drms_matrix10 = np.empty((self.x_size, self.y_size));
+        drms_matrix10[:] = np.nan
+        for x in range(len(self.fair_int_dRMS_10m)):
+            drms_matrix[int(self.col[x])-1][int(self.row[x])-1]= self.fair_int_dRMS_10m[x];
+        plt.imshow(np.rot90(drms_matrix10), current_cmap,  vmin=-50000, vmax=50000);
+        plt.colorbar()
+        plt.show()
 
 
-        #np.c_[x,y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
-        self.features_matrix_dsw = np.c_[self.x, self.y,self.int_dRMS_10]; #np.c_[self.int_dRMS_10];#
-        self.features_matrix_dsg = np.c_[self.x, self.y,self.int_dRMS_10]; #np.c_[self.int_dRMS_10];#
+        drms_matrix20 = np.empty((self.x_size, self.y_size));
+        drms_matrix20[:] = np.nan
+        for x in range(len(self.fair_int_dRMS_20m)):
+            drms_matrix[int(self.col[x])-1][int(self.row[x])-1]= self.fair_int_dRMS_20m[x];
+        plt.imshow(np.rot90(drms_matrix20), current_cmap,  vmin=-50000, vmax=50000);
+        plt.colorbar()
+        plt.show()
 
 
-        #CorrelationAnalysis(attributes_list, attributes_matrix, attributes_names);
+        #testing
+        features_matrix_dsw_test = np.c_[self.fair_int_dRMS_10m];#
+        features_matrix_dsg_test = np.c_[self.fair_int_dRMS_10m];#
 
-        #linearRegression = LinearRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #multilayerPerceptron = MultilayerPerceptron(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #svRegression = SVRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #xgBoost = XGBoost(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
+        randomForestOtherTest = RandomForestOtherTest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW", features_matrix_dsw_test);
         predicted_matrix = np.empty((self.x_size, self.y_size));
         predicted_matrix[:] = np.nan
-        print(len(randomForest.predicted_y))
-        for x in range(len(randomForest.predicted_y)):
-            predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
+        print(len(randomForestOtherTest.predicted_y))
+        for x in range(len(randomForestOtherTest.predicted_y)):
+            predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForestOtherTest.predicted_y[x];
+        plt.imshow(np.rot90(predicted_matrix), current_cmap,  vmin=-0.5, vmax=0.5);
+        plt.colorbar()
+        plt.show()
+
+        randomForestOtherTest = RandomForestOtherTest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG", features_matrix_dsg_test);
+        predicted_matrix = np.empty((self.x_size, self.y_size));
+        predicted_matrix[:] = np.nan
+        print(len(randomForestOtherTest.predicted_y))
+        for x in range(len(randomForestOtherTest.predicted_y)):
+            predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForestOtherTest.predicted_y[x];
         plt.imshow(np.rot90(predicted_matrix), current_cmap,  vmin=-0.5, vmax=0.5);
         plt.colorbar()
         plt.show()
 
 
-        #linearRegression2 = LinearRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        #multilayerPerceptron2 = MultilayerPerceptron(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        #svRegression2 = SVRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        #xgBoost2 = XGBoost(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        randomForest2 = RandomForest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
+        features_matrix_dsw_test = np.c_[self.fair_int_dRMS_20m];#
+        features_matrix_dsg_test = np.c_[self.fair_int_dRMS_20m];#
+
+        randomForestOtherTest = RandomForestOtherTest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW", features_matrix_dsw_test);
         predicted_matrix = np.empty((self.x_size, self.y_size));
         predicted_matrix[:] = np.nan
-        for x in range(len(randomForest2.predicted_y)):
-            predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest2.predicted_y[x];
-        plt.imshow(np.rot90(predicted_matrix), current_cmap,  vmin=-0.05, vmax=0.05);
-        plt.colorbar()
-        plt.show()
-
-        #20
-        attribute_names_dsw = ["x","y", "int_dRMS"];
-        attribute_names_dsg = ["x","y", "int_dRMS"];
-        attributes_list = [self.x, self.y, self.dsg, self.dsw, self.int_dRMS_20];
-        attributes_matrix = np.c_[self.x, self.y, self.dsg, self.dsw, self.int_dRMS_20];
-        attributes_names = ["x","y","dSg", "dSw", "int_dRMS"];
-
-
-
-        #np.c_[x,y, porosity, porosity_effective, ntg, sw_base, sg_base, dsg, dsw];
-        self.features_matrix_dsw = np.c_[self.x, self.y,self.int_dRMS_20];#np.c_[self.int_dRMS_20];#
-        self.features_matrix_dsg = np.c_[self.x, self.y,self.int_dRMS_20];#np.c_[self.int_dRMS_20];#
-
-
-        #CorrelationAnalysis(attributes_list, attributes_matrix, attributes_names);
-
-        #linearRegression = LinearRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #multilayerPerceptron = MultilayerPerceptron(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #svRegression = SVRegression(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        #xgBoost = XGBoost(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        randomForest = RandomForest(self.features_matrix_dsw, self.dsw, attribute_names_dsw, "Target: DSW");
-        predicted_matrix = np.empty((self.x_size, self.y_size));
-        predicted_matrix[:] = np.nan
-        for x in range(len(randomForest.predicted_y)):
-            predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest.predicted_y[x];
+        print(len(randomForestOtherTest.predicted_y))
+        for x in range(len(randomForestOtherTest.predicted_y)):
+            predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForestOtherTest.predicted_y[x];
         plt.imshow(np.rot90(predicted_matrix), current_cmap,  vmin=-0.5, vmax=0.5);
         plt.colorbar()
         plt.show()
 
-        #linearRegression2 = LinearRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        #multilayerPerceptron2 = MultilayerPerceptron(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        #svRegression2 = SVRegression(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        #xgBoost2 = XGBoost(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
-        randomForest2 = RandomForest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG");
+        randomForestOtherTest = RandomForestOtherTest(self.features_matrix_dsg, self.dsg, attribute_names_dsg, "Target: DSG", features_matrix_dsg_test);
         predicted_matrix = np.empty((self.x_size, self.y_size));
         predicted_matrix[:] = np.nan
-        for x in range(len(randomForest2.predicted_y)):
-            predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForest2.predicted_y[x];
-        plt.imshow(np.rot90(predicted_matrix), current_cmap,  vmin=-0.05, vmax=0.05);
+        print(len(randomForestOtherTest.predicted_y))
+        for x in range(len(randomForestOtherTest.predicted_y)):
+            predicted_matrix[int(self.col[x])-1][int(self.row[x])-1]= randomForestOtherTest.predicted_y[x];
+        plt.imshow(np.rot90(predicted_matrix), current_cmap,  vmin=-0.5, vmax=0.5);
         plt.colorbar()
         plt.show()
 

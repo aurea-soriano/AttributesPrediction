@@ -87,8 +87,8 @@ class Utils(object):
         '''
         Constructor
         '''
-        input_file = "../data/dRMS_20m";
-        output_file = "../data/int_dRMS_20m";
+        input_file = "../data/dRMS";
+        output_file = "../data/int_dRMS";
         fileReader = open(input_file, "r");
         fileWriter= open(output_file,"w+");
         rows_vector = [];
@@ -185,3 +185,4 @@ if __name__ == '__main__':
     #Utils.interpolated_drms_resolution();
     Utils.fair_interpolated_drms_resolution(193, 151, "../data/dRMS_10m", "../data/fair_int_dRMS_10m");
     Utils.fair_interpolated_drms_resolution(193, 151, "../data/dRMS_20m", "../data/fair_int_dRMS_20m");
+    Utils.fair_interpolated_drms_resolution(193, 151, "../data/dRMS", "../data/fair_int_dRMS");
